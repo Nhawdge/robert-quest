@@ -1,0 +1,14 @@
+*{
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
+}
+body {
+    padding-top: 40px;
+    max-width: 1400px;
+    margin: auto;
+    grid-template-columns: 1fr 1fr;
+    display: grid;
+}
+
+body > * {
+    padding: 20px;
+}

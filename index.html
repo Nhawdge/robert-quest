@@ -7,53 +7,53 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Robert Quest</title>
     <link rel="stylesheet" href="src/main.css">
-    <script src="src/main.js"></script>
+    <script defer src="src/main.js"></script>
 </head>
 
 <body>
-    <div>
+    <div data-visible="">
         Character
-        <input type="text" name="Name" placeholder="name">
+        <input type="text" name="Name" placeholder="name" data-player-name>
         <hr>
         <label>
-            <input type="radio" name="gender" value="Female"> Female
+            <input type="radio" name="gender" value="Female" data-player-gender> Female
         </label>
         <label>
-            <input type="radio" name="gender" value="Male">Male
+            <input type="radio" name="gender" value="Male" data-player-gender>Male
         </label>
 
         <hr>
         <label>
-            <input type="radio" name="class" value="Warrior">Warrior
+            <input type="radio" name="class" value="Warrior" data-player-class>Warrior
         </label>
         <label>
-            <input type="radio" name="class" value="Rogue">Rogue
+            <input type="radio" name="class" value="Rogue" data-player-class>Rogue
         </label>
         <label>
-            <input type="radio" name="class" value="Wizard">Wizard
+            <input type="radio" name="class" value="Wizard" data-player-class>Wizard
         </label>
         <hr>
         Adult Backstory
         <label>
-            <input type="radio" name="aBackstory" value="Slave">Slave
+            <input type="radio" name="aBackstory" value="Slave" data-player-abs>Slave
         </label>
         <label>
-            <input type="radio" name="aBackstory" value="Merchant">Merchant
+            <input type="radio" name="aBackstory" value="Merchant" data-player-abs>Merchant
         </label>
         <label>
-            <input type="radio" name="aBackstory" value="Crafter">Crafter
+            <input type="radio" name="aBackstory" value="Crafter" data-player-abs>Crafter
         </label>
 
         <br>
         Childhood backstory
         <label>
-            <input type="radio" name="cBackstory" value="Squire">Squire
+            <input type="radio" name="cBackstory" value="Squire" data-player-cbs>Squire
         </label>
         <label>
-            <input type="radio" name="cBackstory" value="Hoodlum">Hoodlum
+            <input type="radio" name="cBackstory" value="Hoodlum"data-player-cbs>Hoodlum
         </label>
         <br>
-        <button>Save Character</button>
+        <button data-click="saveCharacter">Save Character</button>
 
     </div>
     <div>

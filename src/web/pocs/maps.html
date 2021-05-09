@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map Generator Proof of Concept</title>
+    <style>
+        body {
+            max-width: 100%;
+            height: 800px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <svg viewBox="0 0 100 100" width="400px" height="400px">
+    </svg>
+    <script>
+        var svg = document.querySelector('svg');
+
+        function genCoords() {
+            var x = Math.ceil(Math.random() * 100)
+            var y = Math.ceil(Math.random() * 100)
+            result = { x, y };
+            console.log(result);
+            return result;
+        }
+        var towns = []
+        while (towns.length < 6) {
+            towns.push(genCoords())
+        }
+        for (town of towns) {
+            var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            circle.setAttribute("cx", town.x);
+            circle.setAttribute("cy", town.y);
+            circle.setAttribute("r", 3);
+            svg.appendChild(circle);
+
+            var line = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            line.setAttribute("stroke", "black");
+            neighbor = towns[Math.floor(Math.random() * towns.length)];
+            line.setAttribute("d",
+                `M ${town.x} ${town.y} Q  ${town.x},${neighbor.y} ${neighbor.x},${neighbor.y} `
+            );
+            line.setAttribute("fill", "none");
+            svg.appendChild(line);
+        }
+    </script>
+
+</body>
+
+</html>

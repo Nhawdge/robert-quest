@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Combat Proof of Concept</title>
+    <style>
+        body {
+            max-width: 400px;
+            margin: auto;
+            padding-top: 20px;
+        }
+
+        .selected {
+            border: solid 1px black;
+        }
+
+        .Enemy,
+        .Player {
+            padding: 4px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        meter {
+            width: 100%;
+            margin: 5px;
+        }
+    </style>
+    <script type="module" src="Game.js"></script>
+</head>
+
+<body>
+    <div id="enemies"> </div>
+    <hr>
+    <div id="player"> </div>
+    <button id="endTurn">End Turn</button>
+</body>
+
+</html>

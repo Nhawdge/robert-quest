@@ -20,7 +20,6 @@ export default class Entity {
     this.Health ??= stats?.Health;
     this.Strength ??= stats?.Strength;
     this.Shield ??= stats?.Shield;
-    console.log(this.Id);
   }
 
   Render() {
@@ -84,16 +83,5 @@ export default class Entity {
     console.log("Defending ", this);
   };
 
-  SelectTarget = (evt) => {
-    var tar = evt.target;
-    if (!tar.classList.contains("Enemy")) {
-      tar = tar.parentElement;
-    }
-    document
-      .querySelectorAll(".selected")
-      .forEach((x) => x.classList.remove("selected"));
-    tar.classList.add("selected");
-    console.log(tar.id);
-    this.Target = enemies.find((x) => x.DomId == tar.id);
-  };
+ 
 }

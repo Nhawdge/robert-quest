@@ -10,12 +10,12 @@ export default class CombatEngine {
   }
 
   Load() {
-    this.AllEntities = [
-      new Player("You"),
-      new Enemy("Ogre"),
-      new Enemy("Lizard"),
-      new Enemy("Bear"),
-    ];
+    // this.AllEntities = [
+    //   new Player("You"),
+    //   new Enemy("Ogre"),
+    //   new Enemy("Lizard"),
+    //   new Enemy("Bear"),
+    // ];
   }
 
   Startup() {

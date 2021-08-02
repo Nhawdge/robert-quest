@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Map Generator Proof of Concept</title>
+    <style>
+      body {
+        max-width: 100%;
+        height: 800px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <svg viewBox="0 0 100 100" width="400px" height="400px"></svg>
+    <script>
+      class Map {
+        Entry = new Room();
+
+        generate() {
+          this.Entry.generate(0);
+        }
+        toSvg(svg) {
+          var start = this.Entry;
+          var nodes = start.doors.flatMap((x) => x.doors);
+
+          console.log({ start, nodes });
+          for (let i = 0; i < nodes.length; i++) {
+            let node = nodes[i];
+            var rect = document.createElementNS(
+              "http://www.w3.org/2000/svg",
+              "rect"
+            );
+            rect.setAttribute("x", node.position.x);
+            rect.setAttribute("y", node.position.y);
+            rect.setAttribute("width", 10);
+            rect.setAttribute("height", 10);
+            svg.appendChild(rect);
+
+            // var line = document.createElementNS(
+            //   "http://www.w3.org/2000/svg",
+            //   "path"
+            // );
+            // line.setAttribute("stroke", "black");
+            // neighbor = towns[Math.floor(Math.random() * towns.length)];
+            // line.setAttribute(
+            //   "d",
+            //   `M ${town.x} ${town.y} Q  ${town.x},${neighbor.y} ${neighbor.x},${neighbor.y} `
+            // );
+            // line.setAttribute("fill", "none");
+            // svg.appendChild(line);
+          }
+        }
+      }
+
+      class Room {
+        doors = [];
+        position = { x: 0, y: 0 };
+
+        generate(depth, parent) {
+          var baseX = parent?.position.x ?? 50;
+          var baseY = parent?.position.y ?? 50;
+
+          //   var x = baseX + (Math.floor(Math.random() * 100) % 2 ? 1 : -1) * 5;
+          //   var y = baseY + (Math.floor(Math.random() * 100) % 2 ? 1 : -1) * 5;
+          var direction = Math.floor(Math.random() * 100) % 4;
+          switch (direction) {
+            case 0: // North
+              baseY += 15;
+              break;
+            case 1: //east
+              baseX += 15;
+              break;
+            case 2: // south
+              baseY -= 15;
+              break;
+            case 3: //west
+              baseX -= 15;
+              break;
+          }
+
+          var random = Math.ceil((Math.random() * 100) % 3) - depth;
+          this.position = { x: baseX, y: baseY };
+          for (let i = 0; i < random; i++) {
+            var nextRoom = new Room();
+            nextRoom.generate(depth + 1, this);
+            this.doors.push(nextRoom);
+            nodes.push(this.position);
+          }
+        }
+      }
+      var nodes = [];
+      var svg = document.querySelector("svg");
+      var map = new Map();
+
+      map.generate();
+      console.log(map);
+      map.toSvg(svg);
+    </script>
+  </body>
+</html>

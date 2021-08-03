@@ -1,4 +1,7 @@
-const express = require("express");
+import express from "express";
+import updateAll from "./helpers.js";
+import socketIoWildcard from "socketio-wildcard";
+import { Server } from "socket.io";
 
 const app = express();
 
@@ -12,11 +15,11 @@ function listen() {
   console.log("http://localhost:4444", host, port);
 }
 
-let io = require("socket.io")(server);
-var middleware = require("socketio-wildcard")();
+let io = new Server(server);
+
+var middleware = socketIoWildcard();
 io.use(middleware);
 
-let CONNECTIONS = {};
 let GAMES = {};
 
 const EVENTS = {
@@ -28,23 +31,37 @@ const EVENTS = {
 
 io.sockets.on(EVENTS.connect, function (socket) {
   console.log(EVENTS.connect, socket.id);
-  CONNECTIONS[socket.id] = socket;
 
   // TODO Make rooms later
+  const gameName = "awesome";
+  if (!GAMES[gameName]) {
+    GAMES[gameName] = new Game();
+  }
 
-  GAMES[socket.id] = new Game();
-  var player = new Entity();
+  GAMES[gameName].connections[socket.id] = socket;
+
+  var player = new Entity(socket.id);
   player.components.push(new HealthComponent(100));
 
-  GAMES[socket.id].entities.push(player);
+  GAMES[gameName].entities.push(player);
+
+  console.log(Object.keys(GAMES));
 
   socket.on(EVENTS.disconnect, function () {
     console.log("Disconnected", socket.id);
-    delete CONNECTIONS[socket.id];
+    delete GAMES[gameName].connections[socket.id];
+    var playerIndex = GAMES[gameName].entities.findIndex(
+      (x) => x.id == socket.id
+    );
+    console.log("pi", playerIndex);
+    if (playerIndex >= 0) {
+      GAMES[gameName].entities.splice(player, 1);
+    }
+    updateAll(GAMES[gameName]);
   });
 
   socket.on(EVENTS.updateCharacter, (data) => {
-    var player = GAMES[socket.id].entities.find((x) => (x.id = socket.id));
+    var player = GAMES[gameName].entities.find((x) => x.id == socket.id);
     console.log("updateCharacter", data);
     Object.keys(data).forEach((key) => {
       switch (key) {
@@ -63,31 +80,15 @@ io.sockets.on(EVENTS.connect, function (socket) {
     });
 
     player.components.push();
-    updateAll(socket);
+    updateAll(GAMES[gameName]);
   });
-
-  socket.on(EVENTS.commitCharacter, (data) => {
-    CONNECTIONS[socket.id].gameData = updateAll(socket);
-  });
-
-  updateAll(socket);
+  updateAll(GAMES[gameName]);
 });
-
-function updateAll(socket) {
-  GAMES[socket.id].updateState();
-  Object.keys(CONNECTIONS).forEach((conn) => {
-    CONNECTIONS[conn].emit(
-      "update",
-      GAMES[socket.id].entities.map((x) =>
-        x.components.map((y) => y.displayForPlayer())
-      )
-    );
-  });
-}
 
 class Game {
   entities = [];
   systems = [];
+  connections = {};
   constructor() {
     /// Inject all Systems;
     this.systems.push(new HealthSystem());
@@ -103,8 +104,9 @@ class Game {
 class Entity {
   constructor(id) {
     this.components = [];
-    this.id = id ?? parseInt(Math.random().toString().substr(2));
+    this.id = id || parseInt(Math.random().toString().substr(2));
   }
+
   addOrUpdateComponent(component) {
     var existingComponent = this.components.find(
       (x) => component.constructor.name == x.constructor.name

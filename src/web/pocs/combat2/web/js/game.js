@@ -1,4 +1,6 @@
-var socket = io();
+var query = { room: "promptlater" };
+
+var socket = io("", query);
 
 const EVENTS = {
   connect: "connection",

@@ -104,9 +104,9 @@ class Game {
       this.entities.forEach(system.Tick);
     });
 
-    this.systems.forEach(system => {
+    this.systems.forEach((system) => {
       system.TickAll(this.entities);
-    })
+    });
   }
 }
 

@@ -5,7 +5,7 @@ import { Server } from "socket.io";
 
 const app = express();
 
-app.use(express.static("./src/web/pocs/combat2/web"));
+app.use(express.static("./src/web/"));
 
 let server = app.listen(process.env.PORT || 4444, listen);
 

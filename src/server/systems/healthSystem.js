@@ -7,4 +7,7 @@ export default class HealthSystem extends System {
       component.CurrentHealth = component.max;
     }
   }
+  TickAll(components){
+    
+  }
 }

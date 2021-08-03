@@ -113,6 +113,9 @@ class Entity {
     if (!existingComponent) {
       this.components.push(component);
     } else {
+      Object.keys(component).forEach(
+        (x) => (existingComponent[x] = component[x])
+      );
     }
   }
 }

@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/server.js",
-    "dev": "nodemon srv/server.js"
+    "start": "node src/server/engine.js",
+    "dev": "nodemon src/server/engine.js"
   },
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Nhawdge/robert-quest.git"
@@ -19,6 +20,8 @@
   },
   "homepage": "https://github.com/Nhawdge/robert-quest#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "socket.io": "^4.1.3",
+    "socketio-wildcard": "^2.0.0"
   }
 }

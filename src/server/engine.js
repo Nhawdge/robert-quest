@@ -2,6 +2,11 @@ import express from "express";
 import updateAll from "./helpers.js";
 import socketIoWildcard from "socketio-wildcard";
 import { Server } from "socket.io";
+import HealthSystem from "./systems/healthsystem.js";
+import HealthComponent from "./components/healthcomponent.js";
+import CharacterClass from "./components/characterClassComponent.js";
+import Background from "./components/backgroundComponent.js";
+import Equipment from "./components/equipmentComponent.js";
 
 const app = express();
 
@@ -98,6 +103,10 @@ class Game {
     this.systems.forEach((system) => {
       this.entities.forEach(system.Tick);
     });
+
+    this.systems.forEach(system => {
+      system.allTick(this.entities);
+    })
   }
 }
 
@@ -119,75 +128,5 @@ class Entity {
         (x) => (existingComponent[x] = component[x])
       );
     }
-  }
-}
-
-class Component {
-  displayForPlayer() {
-    throw "Implement me";
-  }
-}
-
-class System {
-  Tick() {
-    throw "Implement me";
-  }
-}
-
-class HealthSystem extends System {
-  Tick(component) {
-    component.CurrentHealth += component.RegenerationRate;
-    if (component.CurrentHealth > component.Max) {
-      component.CurrentHealth = component.max;
-    }
-  }
-}
-
-class HealthComponent extends Component {
-  constructor(max) {
-    super();
-
-    this.Max = max || 10;
-    this.CurrentHealth = this.Max;
-    this.RegenerationRate = 1;
-  }
-  displayForPlayer() {
-    return `Health: ${this.CurrentHealth} / ${this.Max}`;
-  }
-}
-
-class CharacterClass extends Component {
-  constructor(name) {
-    super();
-
-    this.Name = name ?? "None";
-  }
-  displayForPlayer() {
-    return `Class: ${this.Name}`;
-  }
-}
-
-class Background extends Component {
-  constructor(name) {
-    super();
-
-    this.Name = name || "None";
-  }
-  displayForPlayer() {
-    return `Background: ${this.Name}`;
-  }
-}
-class Equipment extends Component {
-  constructor() {
-    super();
-
-    this.Slots = {
-      MainHand: "",
-      Chest: "",
-    };
-  }
-  displayForPlayer() {
-    var gear = Object.keys(this.Slots).map((x) => `${x}: ${this.Slots[x]}`);
-    return gear.join("\n");
   }
 }

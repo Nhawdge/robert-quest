@@ -9,7 +9,7 @@ import Background from "./components/backgroundComponent.js";
 import Equipment from "./components/equipmentComponent.js";
 import Turn from "./components/turnComponent.js";
 import TurnSystem from "./systems/turnSystem.js";
-import AttributeComponent from "./components/attributescomponent.js";
+import AttributeComponent from "./components/attributesComponent.js";
 import AttributeSystem from "./systems/attributeSystem.js";
 import ActionComponent from "./components/actionComponent.js";
 import Label from "./components/labelComponent.js";

@@ -13,7 +13,7 @@ export default class TargetSystem extends System {
       }
       target.TargetName = "";
 
-      var targetEntity = entities.find((x) => (x.id = target.TargetId));
+      var targetEntity = entities.find((x) => x.id == target.TargetId);
       if (targetEntity) {
         var label = targetEntity.getComponentByType(Label);
         if (label) {

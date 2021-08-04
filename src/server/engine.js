@@ -64,6 +64,7 @@ io.sockets.on(EVENTS.connect, function (socket) {
   /// Enemy
   var enemy = new Entity();
   enemy.addOrUpdateComponent(new HealthComponent(30));
+  enemy.addOrUpdateComponent(new Label("Ghost of Giving up"));
 
   GAMES[gameName].entities.push(enemy);
   /// Enemy
@@ -75,9 +76,10 @@ io.sockets.on(EVENTS.connect, function (socket) {
     var playerIndex = GAMES[gameName].entities.findIndex(
       (x) => x.id == socket.id
     );
-    console.log("pi", playerIndex);
+    // console.log("pi", playerIndex, GAMES[gameName].entities);
     if (playerIndex >= 0) {
-      GAMES[gameName].entities.splice(player, 1);
+      var removed = GAMES[gameName].entities.splice(playerIndex, 1);
+      console.log("Removed", removed.id);
     }
     updateAll(GAMES[gameName]);
   });
@@ -108,7 +110,6 @@ io.sockets.on(EVENTS.connect, function (socket) {
           player.addOrUpdateComponent(turn);
           break;
         case "target":
-          console.log(player);
           var action = new ActionComponent(data[key]);
           player.addOrUpdateComponent(action);
           break;

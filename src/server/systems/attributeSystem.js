@@ -1,4 +1,4 @@
-import AttributeComponent from "../components/attributescomponent.js";
+import AttributeComponent from "../components/attributesComponent.js";
 import Background from "../components/backgroundComponent.js";
 import CharacterClass from "../components/characterClassComponent.js";
 import System from "./system.js";

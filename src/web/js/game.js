@@ -11,7 +11,6 @@ const EVENTS = {
 
 socket.on("update", function (data) {
   var connections = document.querySelector("#activeConnections");
-  console.log(data);
   connections.textContent = "";
   data
     .filter((x) => x)
@@ -20,6 +19,11 @@ socket.on("update", function (data) {
       li.innerHTML = Object.keys(element)
         .map((key) => `${key}: ${element[key]}`)
         .join("<br>");
+      li.dataset.target = element.id;
+      li.addEventListener("click", function (e) {
+        console.log(e.target);
+        socket.emit(EVENTS.updateCharacter, e.target.dataset);
+      });
       connections.appendChild(li);
     });
 });

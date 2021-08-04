@@ -7,6 +7,13 @@ import HealthComponent from "./components/healthComponent.js";
 import CharacterClass from "./components/characterClassComponent.js";
 import Background from "./components/backgroundComponent.js";
 import Equipment from "./components/equipmentComponent.js";
+import Turn from "./components/turnComponent.js";
+import TurnSystem from "./systems/turnSystem.js";
+import AttributeComponent from "./components/attributescomponent.js";
+import AttributeSystem from "./systems/attributeSystem.js";
+import ActionComponent from "./components/actionComponent.js";
+import Label from "./components/labelComponent.js";
+import TargetSystem from "./systems/targetSystem.js";
 
 const app = express();
 
@@ -26,6 +33,7 @@ var middleware = socketIoWildcard();
 io.use(middleware);
 
 let GAMES = {};
+5;
 
 const EVENTS = {
   connect: "connection",
@@ -46,10 +54,19 @@ io.sockets.on(EVENTS.connect, function (socket) {
   GAMES[gameName].connections[socket.id] = socket;
 
   var player = new Entity(socket.id);
-  player.components.push(new HealthComponent(100));
+  player.addOrUpdateComponent(new HealthComponent(100));
+  player.getComponentByType(HealthComponent).CurrentHealth = 95;
+  player.addOrUpdateComponent(new Turn());
+  player.addOrUpdateComponent(new AttributeComponent());
 
   GAMES[gameName].entities.push(player);
 
+  /// Enemy
+  var enemy = new Entity();
+  enemy.addOrUpdateComponent(new HealthComponent(30));
+
+  GAMES[gameName].entities.push(enemy);
+  /// Enemy
   console.log(Object.keys(GAMES));
 
   socket.on(EVENTS.disconnect, function () {
@@ -67,6 +84,10 @@ io.sockets.on(EVENTS.connect, function (socket) {
 
   socket.on(EVENTS.updateCharacter, (data) => {
     var player = GAMES[gameName].entities.find((x) => x.id == socket.id);
+    if (!player) {
+      console.warn("No player found cannot proceed");
+      return;
+    }
     console.log("updateCharacter", data);
     Object.keys(data).forEach((key) => {
       switch (key) {
@@ -80,6 +101,20 @@ io.sockets.on(EVENTS.connect, function (socket) {
           var equipment = new Equipment();
           equipment.Slots["MainHand"] = data[key];
           player.addOrUpdateComponent(equipment);
+          break;
+        case "turn":
+          var turn = new Turn();
+          turn.TurnEnded = true;
+          player.addOrUpdateComponent(turn);
+          break;
+        case "target":
+          console.log(player);
+          var action = new ActionComponent(data[key]);
+          player.addOrUpdateComponent(action);
+          break;
+        case "name":
+          var name = new Label(data[key]);
+          player.addOrUpdateComponent(name);
           break;
       }
     });
@@ -95,8 +130,12 @@ class Game {
   systems = [];
   connections = {};
   constructor() {
-    /// Inject all Systems;
+    /// Inject all Systems; ORDER IS IMPORTANT
     this.systems.push(new HealthSystem());
+    this.systems.push(new AttributeSystem());
+    this.systems.push(new TargetSystem());
+
+    this.systems.push(new TurnSystem());
   }
 
   updateState() {
@@ -128,5 +167,20 @@ class Entity {
         (x) => (existingComponent[x] = component[x])
       );
     }
+  }
+
+  getComponentByType(componentType) {
+    var existingComponent = this.components.find(
+      (x) => componentType.name == x.constructor.name
+    );
+
+    return existingComponent;
+  }
+  getComponentByTypes() {
+    var allComponents = [];
+    arguments.forEach((arg) => {
+      allComponents.push(this.getComponentByType(arg));
+    });
+    return allComponents.filter((x) => x);
   }
 }

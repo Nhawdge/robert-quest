@@ -9,6 +9,6 @@ export default class HealthComponent extends Component {
     this.RegenerationRate = 1;
   }
   displayForPlayer() {
-    return `Health: ${this.CurrentHealth} / ${this.Max}`;
+    return `Health: ${this.CurrentHealth} / ${this.Max} | Regen: ${this.RegenerationRate} / turn`;
   }
 }

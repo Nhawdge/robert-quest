@@ -1,14 +1,19 @@
 import Component from "./component.js";
 
-export default class ActionComponent extends Component {
+export default class Action extends Component {
   TargetName = "";
+  Act;
+  //Act
   constructor(TargetId) {
     super();
 
-    this.TargetId = TargetId;
+    if (TargetId) {
+      this.TargetId = TargetId;
+      this.Act = null;
+    }
   }
 
   displayForPlayer() {
-    return `Targetting ${this.TargetName}`;
+    return `${this.Act || "Target"}ing ${this.TargetName}`;
   }
 }

@@ -4,13 +4,13 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Combat attempt 2</title>
+    <title>Robert Quest</title>
     <script
       type="module"
       src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"
     ></script>
     <script type="module" src="./js/game.js"></script>
-    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="main.css" />
   </head>
 
   <body>
@@ -51,8 +51,14 @@
           <button data-weapon="Staff">Staff</button>
           <button data-weapon="Dagger">Dagger</button>
         </fieldset>
-        
-        <button data-turn="true">Done!</button>
+        <fieldset>
+          <legend>Actions</legend>
+          <button data-action="Attack">Attack</button>
+          <button data-action="Heal">Heal</button>
+          <button data-action="Defend">Defend</button>
+          |
+          <button data-turn="true">Done!</button>
+        </fieldset>
       </div>
     </main>
   </body>

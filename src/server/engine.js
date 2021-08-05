@@ -1,5 +1,5 @@
 import express from "express";
-import updateAll from "./helpers.js";
+import { generateEnemy, updateAll } from "./gameHelpers.js";
 import socketIoWildcard from "socketio-wildcard";
 import { Server } from "socket.io";
 import HealthSystem from "./systems/healthSystem.js";
@@ -11,9 +11,14 @@ import Turn from "./components/turnComponent.js";
 import TurnSystem from "./systems/turnSystem.js";
 import AttributeComponent from "./components/attributesComponent.js";
 import AttributeSystem from "./systems/attributeSystem.js";
-import ActionComponent from "./components/actionComponent.js";
+import Action from "./components/actionComponent.js";
 import Label from "./components/labelComponent.js";
 import TargetSystem from "./systems/targetSystem.js";
+import ActionSystem from "./systems/actionSystem.js";
+import AttackSystem from "./systems/attackSystem.js";
+import Entity from "./entity.js";
+import AiSystem from "./systems/aiSystem.js";
+import Hostility from "./components/hostilityComponent.js";
 
 const app = express();
 
@@ -33,7 +38,6 @@ var middleware = socketIoWildcard();
 io.use(middleware);
 
 let GAMES = {};
-5;
 
 const EVENTS = {
   connect: "connection",
@@ -58,17 +62,15 @@ io.sockets.on(EVENTS.connect, function (socket) {
   player.getComponentByType(HealthComponent).CurrentHealth = 95;
   player.addOrUpdateComponent(new Turn());
   player.addOrUpdateComponent(new AttributeComponent());
+  player.addOrUpdateComponent(new Label("Player"));
+  player.addOrUpdateComponent(new Hostility("players"));
 
   GAMES[gameName].entities.push(player);
 
   /// Enemy
-  var enemy = new Entity();
-  enemy.addOrUpdateComponent(new HealthComponent(30));
-  enemy.addOrUpdateComponent(new Label("Ghost of Giving up"));
-
+  var enemy = generateEnemy(1);
   GAMES[gameName].entities.push(enemy);
   /// Enemy
-  console.log(Object.keys(GAMES));
 
   socket.on(EVENTS.disconnect, function () {
     console.log("Disconnected", socket.id);
@@ -76,7 +78,6 @@ io.sockets.on(EVENTS.connect, function (socket) {
     var playerIndex = GAMES[gameName].entities.findIndex(
       (x) => x.id == socket.id
     );
-    // console.log("pi", playerIndex, GAMES[gameName].entities);
     if (playerIndex >= 0) {
       var removed = GAMES[gameName].entities.splice(playerIndex, 1);
       console.log("Removed", removed.id);
@@ -110,12 +111,17 @@ io.sockets.on(EVENTS.connect, function (socket) {
           player.addOrUpdateComponent(turn);
           break;
         case "target":
-          var action = new ActionComponent(data[key]);
+          var action = new Action(data[key]);
           player.addOrUpdateComponent(action);
           break;
         case "name":
           var name = new Label(data[key]);
           player.addOrUpdateComponent(name);
+          break;
+        case "action":
+          var action = new Action();
+          action.Act = data[key];
+          player.addOrUpdateComponent(action);
           break;
       }
     });
@@ -130,58 +136,25 @@ class Game {
   entities = [];
   systems = [];
   connections = {};
+
   constructor() {
     /// Inject all Systems; ORDER IS IMPORTANT
+    this.systems.push(new AiSystem());
     this.systems.push(new HealthSystem());
     this.systems.push(new AttributeSystem());
     this.systems.push(new TargetSystem());
+    this.systems.push(new ActionSystem());
+    this.systems.push(new AttackSystem());
 
     this.systems.push(new TurnSystem());
   }
 
   updateState() {
     this.systems.forEach((system) => {
-      this.entities.forEach(system.Tick);
-    });
-
-    this.systems.forEach((system) => {
       system.TickAll(this.entities);
     });
-  }
-}
-
-class Entity {
-  constructor(id) {
-    this.components = [];
-    this.id = id || parseInt(Math.random().toString().substr(2));
-  }
-
-  addOrUpdateComponent(component) {
-    var existingComponent = this.components.find(
-      (x) => component.constructor.name == x.constructor.name
-    );
-
-    if (!existingComponent) {
-      this.components.push(component);
-    } else {
-      Object.keys(component).forEach(
-        (x) => (existingComponent[x] = component[x])
-      );
-    }
-  }
-
-  getComponentByType(componentType) {
-    var existingComponent = this.components.find(
-      (x) => componentType.name == x.constructor.name
-    );
-
-    return existingComponent;
-  }
-  getComponentByTypes() {
-    var allComponents = [];
-    arguments.forEach((arg) => {
-      allComponents.push(this.getComponentByType(arg));
+    this.systems.forEach((system) => {
+      this.entities.forEach(system.Tick);
     });
-    return allComponents.filter((x) => x);
   }
 }

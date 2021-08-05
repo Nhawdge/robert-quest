@@ -1,3 +1,4 @@
+import AiComponent from "../components/aiComponent.js";
 import AttributeComponent from "../components/attributesComponent.js";
 import Background from "../components/backgroundComponent.js";
 import CharacterClass from "../components/characterClassComponent.js";
@@ -10,9 +11,6 @@ export default class AttributeSystem extends System {
     var background = entity.getComponentByType(Background);
 
     if (!attributes) {
-      return;
-    }
-    if (!charClass) {
       return;
     }
 
@@ -33,7 +31,15 @@ export default class AttributeSystem extends System {
       (charClass?.Modifiers.Dexterity || 0) +
       (background?.Modifiers?.Dexterity || 0);
 
-    console.log(attributes.BaseAttributes.Strength, charClass?.Class);
+    var ai = entity.getComponentByType(AiComponent);
+    if (ai) {
+      updatedAttributes.Strength = ai.BaseLevel * 3;
+      updatedAttributes.Intelligence = ai.BaseLevel * 3;
+      updatedAttributes.Dexterity = ai.BaseLevel * 3;
+    }
+
+    updatedAttributes.MeleeMin = Math.floor(updatedAttributes.Strength * 1);
+    updatedAttributes.MeleeMax = Math.floor(updatedAttributes.Strength * 1.5);
 
     entity.addOrUpdateComponent(updatedAttributes);
   }

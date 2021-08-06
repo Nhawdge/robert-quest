@@ -8,6 +8,6 @@ export default class Label extends Component {
   }
 
   displayForPlayer() {
-    return `${this.Name}`;
+    return `Name: ${this.Name}`;
   }
 }

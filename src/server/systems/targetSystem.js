@@ -1,4 +1,5 @@
 import Action from "../components/actionComponent.js";
+import HealthComponent from "../components/healthComponent.js";
 import Label from "../components/labelComponent.js";
 import System from "./system.js";
 
@@ -16,6 +17,9 @@ export default class TargetSystem extends System {
       var targetEntity = entities.find((x) => x.id == target.TargetId);
 
       if (targetEntity) {
+        if (!targetEntity.getComponentByType(HealthComponent)) {
+          return;
+        }
         var label = targetEntity.getComponentByType(Label);
 
         if (label) {

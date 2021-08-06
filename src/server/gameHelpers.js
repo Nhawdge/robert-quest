@@ -1,3 +1,4 @@
+import Abilities from "./components/abilitiescomponent.js";
 import AiComponent from "./components/aiComponent.js";
 import AttributeComponent from "./components/attributesComponent.js";
 import HealthComponent from "./components/healthComponent.js";
@@ -9,13 +10,22 @@ import Entity from "./entity.js";
 export function updateAll(game) {
   game.updateState();
   Object.keys(game.connections).forEach((conn) => {
-    game.connections[conn].emit(
-      "update",
-      game.entities.map((x) => ({
+    var dataOut = game.entities.map((x) => {
+      var uiData = {
         id: x.id,
-        ...x.components.map((y) => y.displayForPlayer()),
-      }))
-    );
+        components: x.components
+          .map((y) => y.displayForPlayer())
+          .filter((x) => x),
+      };
+
+      if (conn == x.id) {
+        uiData.abilities = { Attack: "", Defend: "", Heal: "" };
+      }
+
+      return uiData;
+    });
+
+    game.connections[conn].emit("update", dataOut);
   });
 }
 
@@ -33,4 +43,17 @@ export function generateEnemy(baseStrength) {
   );
   enemy.addOrUpdateComponent(new Hostility("environment"));
   return enemy;
+}
+
+export function generatePlayer(id) {
+  var player = new Entity(id);
+  player.addOrUpdateComponent(new HealthComponent(100));
+  player.getComponentByType(HealthComponent).CurrentHealth = 95;
+  player.addOrUpdateComponent(new Turn());
+  player.addOrUpdateComponent(new AttributeComponent());
+  player.addOrUpdateComponent(new Label("Player"));
+  player.addOrUpdateComponent(new Hostility("players"));
+  player.addOrUpdateComponent(new Abilities());
+  
+  return player;
 }

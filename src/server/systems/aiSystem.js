@@ -1,5 +1,6 @@
 import Action from "../components/actionComponent.js";
 import AiComponent from "../components/aiComponent.js";
+import Label from "../components/labelComponent.js";
 import Turn from "../components/turnComponent.js";
 import System from "./system.js";
 import { getAllHostileEntities } from "./systemHelpers.js";
@@ -21,9 +22,9 @@ export default class AiSystem extends System {
 
         var target = null;
         var hostileEntities = getAllHostileEntities(entity, entities);
-        console.log(hostileEntities);
+
         var index = Math.floor(Math.random() * hostileEntities.length);
-        target = entities[index];
+        target = hostileEntities[index];
 
         var action = new Action(target.id);
         action.Act = "Attack";

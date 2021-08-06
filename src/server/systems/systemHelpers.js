@@ -1,4 +1,6 @@
+import e from "express";
 import Hostility from "../components/hostilityComponent.js";
+import Label from "../components/labelComponent.js";
 import Turn from "../components/turnComponent.js";
 
 export function turnsInProgress(entities) {
@@ -10,11 +12,20 @@ export function turnsInProgress(entities) {
 }
 
 export function getAllHostileEntities(entity, entities) {
-  return entities.filter((x) => isHostile(x, entity));
+  var allHostile = entities.filter((x) => isHostile(x, entity));
+  return allHostile;
 }
 
 export function isHostile(entity1, entity2) {
   var e1hostility = entity1?.getComponentByType(Hostility);
   var e2hostility = entity2?.getComponentByType(Hostility);
-  return e1hostility?.Team === e2hostility?.Team;
+  if (!e1hostility) {
+    return false;
+  }
+  if (!e2hostility) {
+    return false;
+  }
+  var isHostile = e1hostility?.Team !== e2hostility?.Team;
+  console.log(e1hostility, e2hostility, isHostile);
+  return isHostile;
 }

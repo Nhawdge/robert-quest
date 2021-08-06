@@ -32,7 +32,9 @@ export default class HealthSystem extends System {
       }
       if (!turnsInProgress(entities)) {
         var health = entity.getComponentByType(HealthComponent);
-        health.CurrentHealth += health.RegenerationRate;
+        if (health) {
+          health.CurrentHealth += health.RegenerationRate;
+        }
       }
     });
   }

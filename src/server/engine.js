@@ -1,5 +1,5 @@
 import express from "express";
-import { generateEnemy, updateAll } from "./gameHelpers.js";
+import { generateEnemy, generatePlayer, updateAll } from "./gameHelpers.js";
 import socketIoWildcard from "socketio-wildcard";
 import { Server } from "socket.io";
 import HealthSystem from "./systems/healthSystem.js";
@@ -19,6 +19,7 @@ import AttackSystem from "./systems/attackSystem.js";
 import Entity from "./entity.js";
 import AiSystem from "./systems/aiSystem.js";
 import Hostility from "./components/hostilityComponent.js";
+import Scene from "./components/sceneComponent.js";
 
 const app = express();
 
@@ -57,13 +58,7 @@ io.sockets.on(EVENTS.connect, function (socket) {
 
   GAMES[gameName].connections[socket.id] = socket;
 
-  var player = new Entity(socket.id);
-  player.addOrUpdateComponent(new HealthComponent(100));
-  player.getComponentByType(HealthComponent).CurrentHealth = 95;
-  player.addOrUpdateComponent(new Turn());
-  player.addOrUpdateComponent(new AttributeComponent());
-  player.addOrUpdateComponent(new Label("Player"));
-  player.addOrUpdateComponent(new Hostility("players"));
+  var player = generatePlayer(socket.id);
 
   GAMES[gameName].entities.push(player);
 
@@ -138,13 +133,18 @@ class Game {
   connections = {};
 
   constructor() {
+    var singleton = new Entity();
+    singleton.addOrUpdateComponent(new Scene());
+
+    this.entities.push(singleton);
+
     /// Inject all Systems; ORDER IS IMPORTANT
     this.systems.push(new AiSystem());
     this.systems.push(new HealthSystem());
     this.systems.push(new AttributeSystem());
-    this.systems.push(new TargetSystem());
     this.systems.push(new ActionSystem());
     this.systems.push(new AttackSystem());
+    this.systems.push(new TargetSystem());
 
     this.systems.push(new TurnSystem());
   }

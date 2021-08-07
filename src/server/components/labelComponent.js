@@ -5,6 +5,7 @@ export default class Label extends Component {
     super();
 
     this.Name = name;
+    this.DisplayLocation;
   }
 
   displayForPlayer() {

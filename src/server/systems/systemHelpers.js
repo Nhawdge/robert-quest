@@ -1,6 +1,4 @@
-import e from "express";
 import Hostility from "../components/hostilityComponent.js";
-import Label from "../components/labelComponent.js";
 import Turn from "../components/turnComponent.js";
 
 export function turnsInProgress(entities) {
@@ -26,6 +24,5 @@ export function isHostile(entity1, entity2) {
     return false;
   }
   var isHostile = e1hostility?.Team !== e2hostility?.Team;
-  console.log(e1hostility, e2hostility, isHostile);
   return isHostile;
 }

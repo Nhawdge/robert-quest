@@ -6,6 +6,12 @@ export default class Abilities extends Component {
 
     this.Abilities = [];
   }
-  displayForPlayer() {}
-  outputForUi() {}
+  displayForPlayer() {
+    var actions = ` <fieldset> 
+    <legend>Actions</legend>
+    </fieldset>
+    
+    `;
+    return actions;
+  }
 }

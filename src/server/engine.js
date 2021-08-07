@@ -20,6 +20,7 @@ import Entity from "./entity.js";
 import AiSystem from "./systems/aiSystem.js";
 import Hostility from "./components/hostilityComponent.js";
 import Scene from "./components/sceneComponent.js";
+import Map from "./components/mapComponent.js";
 
 const app = express();
 
@@ -59,13 +60,10 @@ io.sockets.on(EVENTS.connect, function (socket) {
   GAMES[gameName].connections[socket.id] = socket;
 
   var player = generatePlayer(socket.id);
-
   GAMES[gameName].entities.push(player);
 
-  /// Enemy
   var enemy = generateEnemy(1);
   GAMES[gameName].entities.push(enemy);
-  /// Enemy
 
   socket.on(EVENTS.disconnect, function () {
     console.log("Disconnected", socket.id);
@@ -135,6 +133,7 @@ class Game {
   constructor() {
     var singleton = new Entity();
     singleton.addOrUpdateComponent(new Scene());
+    singleton.addOrUpdateComponent(new Map());
 
     this.entities.push(singleton);
 

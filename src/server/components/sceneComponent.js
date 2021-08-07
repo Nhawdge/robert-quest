@@ -1,15 +1,15 @@
 import Component from "./component.js";
 
 const Scenes = {
-  Start: 1,
-  Town:2,
-  Combat:3,
-}
+  CharacterCreation: "Character Creation",
+  Town: "Town",
+  Combat: "Combat",
+};
 
 export default class Scene extends Component {
   constructor() {
     super();
-    this.ActiveScene = "Character Creation";
+    this.ActiveScene = Scenes.CharacterCreation;
   }
   displayForPlayer() {
     return `Active Scene: ${this.ActiveScene}`;

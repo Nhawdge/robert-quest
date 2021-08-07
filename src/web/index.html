@@ -1,57 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Robert Quest</title>
-    <script
-      type="module"
-      src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"
-    ></script>
-    <script type="module" src="./js/game.js"></script>
-    <link rel="stylesheet" href="main.css" />
-  </head>
 
-  <body>
-    <main>
-      <h1>Robert Quest</h1>
-      <div>
-        <ul id="activeConnections"></ul>
-      </div>
-      <div>
-        <h2>Character Selection</h2>
-        <fieldset>
-          <legend>Name</legend>
-          <input type="text" name="name" />
-        </fieldset>
-        <fieldset>
-          <legend>Class</legend>
-          <button data-class="Warrior">Warrior</button>
-          <button data-class="Paladin">Paladin</button>
-          <button data-class="Cleric">Cleric</button>
-          <button data-class="Priest">Priest</button>
-          <button data-class="Mage">Mage</button>
-          <button data-class="Archer">Archer</button>
-          <button data-class="Barbarian">Barbarian</button>
-          <button data-class="Rogue">Rogue</button>
-        </fieldset>
-        <fieldset>
-          <legend>Background</legend>
-          <button data-background="Squire">Squire</button>
-          <button data-background="Farmer">Farmer</button>
-          <button data-background="Banker">Banker</button>
-          <button data-background="Clergy">Clergy</button>
-          <button data-background="Orphan">Orphan</button>
-          <button data-background="Pickpocket">Pickpocket</button>
-        </fieldset>
-        <fieldset>
-          <legend>Equipment</legend>
-          <button data-weapon="Sword">Sword</button>
-          <button data-weapon="Staff">Staff</button>
-          <button data-weapon="Dagger">Dagger</button>
-        </fieldset>
-      </div>
-    </main>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Robert Quest</title>
+  <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
+  <script type="module" src="./js/game.js"></script>
+  <link rel="stylesheet" href="main.css" />
+</head>
+
+<body>
+  <main>
+    <h1>Robert Quest</h1>
+    <div>
+      <ul id="activeConnections"></ul>
+    </div>
+    <div>
+      <h2>Character Selection</h2>
+      <fieldset>
+        <legend>Name</legend>
+        <input type="text" name="name" />
+      </fieldset>
+      <fieldset>
+        <legend>Equipment</legend>
+        <button data-weapon="Sword">Sword</button>
+        <button data-weapon="Staff">Staff</button>
+        <button data-weapon="Dagger">Dagger</button>
+      </fieldset>
+    </div>
+  </main>
+</body>
+
 </html>

@@ -13,10 +13,20 @@ export default class Background extends Component {
   constructor(name) {
     super();
 
-    this.Name = name || "None";
+    this.Name = name;
     this.Modifiers = BackgroundData[this.Name] || {};
   }
   displayForPlayer() {
-    return `Background: ${this.Name}`;
+    if (this.Name) {
+      return `Background: ${this.Name}`;
+    } else {
+      var keys = Object.keys(BackgroundData);
+      return keys
+        .map((key) => {
+          var button = `<button data-background="${key}" >${key}</button>`;
+          return button;
+        })
+        .join(" ");
+    }
   }
 }

@@ -1,8 +1,11 @@
 import Abilities from "./components/abilitiescomponent.js";
 import AiComponent from "./components/aiComponent.js";
 import AttributeComponent from "./components/attributesComponent.js";
+import Background from "./components/backgroundComponent.js";
+import CharacterClass from "./components/characterClassComponent.js";
 import HealthComponent from "./components/healthComponent.js";
 import Hostility from "./components/hostilityComponent.js";
+import Inventory from "./components/inventoryComponent.js";
 import Label from "./components/labelComponent.js";
 import Turn from "./components/turnComponent.js";
 import Entity from "./entity.js";
@@ -18,9 +21,9 @@ export function updateAll(game) {
           .filter((x) => x),
       };
 
-      if (conn == x.id) {
-        uiData.abilities = { Attack: "", Defend: "", Heal: "" };
-      }
+      // if (conn == x.id) {
+      //   uiData.abilities = { Attack: "", Defend: "", Heal: "" };
+      // }
 
       return uiData;
     });
@@ -54,6 +57,9 @@ export function generatePlayer(id) {
   player.addOrUpdateComponent(new Label("Player"));
   player.addOrUpdateComponent(new Hostility("players"));
   player.addOrUpdateComponent(new Abilities());
-  
+  player.addOrUpdateComponent(new Background());
+  player.addOrUpdateComponent(new CharacterClass());
+  player.addOrUpdateComponent(new Inventory());
+
   return player;
 }

@@ -47,10 +47,19 @@ export default class CharacterClass extends Component {
   constructor(name) {
     super();
 
-    this.Name = name ?? "None";
+    this.Name = name;
     this.Modifiers = ClassData[this.Name] ?? {};
   }
   displayForPlayer() {
-    return `Class: ${this.Name}`;
+    if (this.Name) {
+      return `Class: ${this.Name}`;
+    }
+    var keys = Object.keys(ClassData);
+    return keys
+      .map((key) => {
+        var button = `<button data-class="${key}" >${key}</button>`;
+        return button;
+      })
+      .join(" ");
   }
 }

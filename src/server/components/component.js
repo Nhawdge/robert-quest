@@ -1,5 +1,5 @@
 export default class Component {
-  displayForPlayer() {
+  displayForPlayer(isPlayer) {
     throw "Implement me";
   }
 }

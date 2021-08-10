@@ -10,7 +10,7 @@ const EVENTS = {
 };
 
 socket.on("update", function (data) {
-  var connections = document.querySelector("#activeConnections");
+  var connections = document.querySelector("#entities");
   connections.textContent = "";
   data
     .filter((x) => x)
@@ -22,29 +22,14 @@ socket.on("update", function (data) {
         socket.emit(EVENTS.updateCharacter, e.target.dataset);
       });
 
-      if (element.abilities) {
-        var fieldset = document.createElement("fieldset");
-        var legend = document.createElement("legend");
-        legend.textContent = "Actions";
-        fieldset.appendChild(legend);
-        fieldset.innerHTML +=
-          Object.keys(element.abilities)
-            .map((x) => {
-              var button = document.createElement("button");
-              button.textContent = x;
-              button.dataset.action = x;
-              return button.outerHTML;
-            })
-            .join(" ");
-        fieldset.innerHTML += " <button data-turn='true'>Done!</button> ";
-        li.appendChild(fieldset);
-      }
       connections.appendChild(li);
     });
 });
 
 document.querySelectorAll("input").forEach((x) => {
   x.addEventListener("blur", (e) => {
+    e.stopImmediatePropagation();
+
     var updateVals = {};
     updateVals[e.target.name] = e.target.value;
     socket.emit("updateCharacter", updateVals);

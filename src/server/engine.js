@@ -3,13 +3,11 @@ import { generateEnemy, generatePlayer, updateAll } from "./gameHelpers.js";
 import socketIoWildcard from "socketio-wildcard";
 import { Server } from "socket.io";
 import HealthSystem from "./systems/healthSystem.js";
-import HealthComponent from "./components/healthComponent.js";
 import CharacterClass from "./components/characterClassComponent.js";
 import Background from "./components/backgroundComponent.js";
 import Equipment from "./components/equipmentComponent.js";
 import Turn from "./components/turnComponent.js";
 import TurnSystem from "./systems/turnSystem.js";
-import AttributeComponent from "./components/attributesComponent.js";
 import AttributeSystem from "./systems/attributeSystem.js";
 import Action from "./components/actionComponent.js";
 import Label from "./components/labelComponent.js";
@@ -18,7 +16,6 @@ import ActionSystem from "./systems/actionSystem.js";
 import AttackSystem from "./systems/attackSystem.js";
 import Entity from "./entity.js";
 import AiSystem from "./systems/aiSystem.js";
-import Hostility from "./components/hostilityComponent.js";
 import Scene from "./components/sceneComponent.js";
 
 const app = express();
@@ -63,7 +60,7 @@ io.sockets.on(EVENTS.connect, function (socket) {
   GAMES[gameName].entities.push(player);
 
   /// Enemy
-  var enemy = generateEnemy(1);
+  var enemy = generateEnemy(Math.ceil(Math.random() * 5));
   GAMES[gameName].entities.push(enemy);
   /// Enemy
 

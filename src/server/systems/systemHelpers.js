@@ -26,6 +26,5 @@ export function isHostile(entity1, entity2) {
     return false;
   }
   var isHostile = e1hostility?.Team !== e2hostility?.Team;
-  console.log(e1hostility, e2hostility, isHostile);
-  return isHostile;
+   return isHostile;
 }

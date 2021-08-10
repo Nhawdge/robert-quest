@@ -13,10 +13,22 @@ export default class Background extends Component {
   constructor(name) {
     super();
 
-    this.Name = name || "None";
+    this.Name = name;
     this.Modifiers = BackgroundData[this.Name] || {};
   }
-  displayForPlayer() {
-    return `Background: ${this.Name}`;
+  displayForPlayer(isPlayer) {
+    var output = [];
+    if (isPlayer && !this.Name) {
+      var backgrounds = Object.keys(BackgroundData)
+        .map((x) => `<button data-background="${x}">${x}</button>`)
+        .join(" ");
+      output.push(
+        `<fieldset><legend>Pick a Background</legend>${backgrounds}</fieldset>`
+      );
+    } else {
+      output.push(`Background: ${this.Name}`);
+    }
+
+    return output.join(" ");
   }
 }

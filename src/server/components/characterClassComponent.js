@@ -50,16 +50,18 @@ export default class CharacterClass extends Component {
     this.Name = name;
     this.Modifiers = ClassData[this.Name] ?? {};
   }
-  displayForPlayer() {
-    if (this.Name) {
-      return `Class: ${this.Name}`;
+  displayForPlayer(isPlayer) {
+    var output = [];
+    if (isPlayer && !this.Name) {
+      var fields = Object.keys(ClassData).map(
+        (x) => `<button data-class="${x}">${x}</button>`
+      ). join(" ");
+      output.push(
+        `<fieldset><legend>Pick a Class</legend> ${fields}</fieldset>`
+      );
+    } else {
+      output.push(`Class: ${this.Name}`);
     }
-    var keys = Object.keys(ClassData);
-    return keys
-      .map((key) => {
-        var button = `<button data-class="${key}" >${key}</button>`;
-        return button;
-      })
-      .join(" ");
+    return output;
   }
 }

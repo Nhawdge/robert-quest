@@ -26,9 +26,11 @@ export default class AiSystem extends System {
         var index = Math.floor(Math.random() * hostileEntities.length);
         target = hostileEntities[index];
 
-        var action = new Action(target.id);
-        action.Act = "Attack";
-        entity.addOrUpdateComponent(action);
+        if (target) {
+          var action = new Action(target.id);
+          action.Act = "Attack";
+          entity.addOrUpdateComponent(action);
+        }
 
         turn.TurnEnded = true;
       }

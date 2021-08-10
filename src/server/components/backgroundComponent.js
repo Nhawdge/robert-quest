@@ -16,17 +16,19 @@ export default class Background extends Component {
     this.Name = name;
     this.Modifiers = BackgroundData[this.Name] || {};
   }
-  displayForPlayer() {
-    if (this.Name) {
-      return `Background: ${this.Name}`;
-    } else {
-      var keys = Object.keys(BackgroundData);
-      return keys
-        .map((key) => {
-          var button = `<button data-background="${key}" >${key}</button>`;
-          return button;
-        })
+  displayForPlayer(isPlayer) {
+    var output = [];
+    if (isPlayer && !this.Name) {
+      var backgrounds = Object.keys(BackgroundData)
+        .map((x) => `<button data-background="${x}">${x}</button>`)
         .join(" ");
+      output.push(
+        `<fieldset><legend>Pick a Background</legend>${backgrounds}</fieldset>`
+      );
+    } else {
+      output.push(`Background: ${this.Name}`);
     }
+
+    return output.join(" ");
   }
 }

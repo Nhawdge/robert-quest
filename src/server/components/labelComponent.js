@@ -6,9 +6,16 @@ export default class Label extends Component {
 
     this.Name = name;
     this.DisplayLocation;
+    this.NameSet = this.Name != "Player";
   }
 
-  displayForPlayer() {
+  displayForPlayer(isPlayer) {
+    if (isPlayer && !this.NameSet) {
+      return `<fieldset>
+      <legend>Name</legend>
+      <input type="text" name="name" />
+    </fieldset>`;
+    }
     return `Name: ${this.Name}`;
   }
 }

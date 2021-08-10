@@ -1,8 +1,8 @@
 export default class System {
-  Tick() {
+  Tick(entity) {
     throw "Implement me";
   }
-  TickAll() {
+  TickAll(entities) {
     throw "Implement me";
   }
 }

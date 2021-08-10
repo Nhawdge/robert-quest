@@ -17,14 +17,9 @@ export function updateAll(game) {
       var uiData = {
         id: x.id,
         components: x.components
-          .map((y) => y.displayForPlayer())
+          .map((y) => y.displayForPlayer(conn == x.id))
           .filter((x) => x),
       };
-
-      // if (conn == x.id) {
-      //   uiData.abilities = { Attack: "", Defend: "", Heal: "" };
-      // }
-
       return uiData;
     });
 
@@ -39,7 +34,7 @@ export function generateEnemy(baseStrength) {
 
   enemy.addOrUpdateComponent(new HealthComponent(baseStrength * 10));
   enemy.addOrUpdateComponent(new AttributeComponent());
-  enemy.addOrUpdateComponent(new AiComponent());
+  enemy.addOrUpdateComponent(new AiComponent(baseStrength));
   enemy.addOrUpdateComponent(new Turn());
   enemy.addOrUpdateComponent(
     new Label(randomNames[Math.floor(Math.random() * randomNames.length)])
@@ -50,6 +45,7 @@ export function generateEnemy(baseStrength) {
 
 export function generatePlayer(id) {
   var player = new Entity(id);
+
   player.addOrUpdateComponent(new HealthComponent(100));
   player.getComponentByType(HealthComponent).CurrentHealth = 95;
   player.addOrUpdateComponent(new Turn());

@@ -17,11 +17,23 @@ socket.on("update", function (data) {
     .forEach((element) => {
       var li = document.createElement("li");
       li.innerHTML = element.components.join("<br>");
+      //var button = document.createElement("button");
+      //button.innerText = "Target";
       li.dataset.target = element.id;
       li.addEventListener("click", function (e) {
-        socket.emit(EVENTS.updateCharacter, e.target.dataset);
+        console.log(e.target);
+        if (e.target.type == "text") {
+          e.target.addEventListener("blur", (evt) => {
+            var data = {};
+            data[evt.target.name] = e.target.value;
+            console.log(data);
+            socket.emit(EVENTS.updateCharacter, data);
+          });
+        } else {
+          socket.emit(EVENTS.updateCharacter, e.target.dataset);
+        }
       });
-
+      //li.appendChild(button);
       connections.appendChild(li);
     });
 });

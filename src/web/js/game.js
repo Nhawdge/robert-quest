@@ -26,6 +26,21 @@ socket.on("update", function (data) {
     });
 });
 
+socket.on("chat", (data) => {
+  var chatWindow = document.querySelector("#chat ol");
+  var li = document.createElement("li");
+  li.innerText = data;
+  chatWindow.appendChild(li);
+  chatWindow.scroll(0, chatWindow.scrollHeight);
+});
+
+document.querySelector("form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  var msg = e.target.querySelector('input[name="chat"]').value;
+  socket.emit("chat", msg);
+  e.target.querySelector('input[name="chat"]').value = "";
+});
+
 document.querySelectorAll("input").forEach((x) => {
   x.addEventListener("blur", (e) => {
     e.stopImmediatePropagation();

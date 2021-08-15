@@ -77,6 +77,16 @@ io.sockets.on(EVENTS.connect, function (socket) {
     updateAll(GAMES[gameName]);
   });
 
+  socket.on("chat", (data) => {
+    var game = GAMES[gameName];
+    Object.keys(game.connections).forEach((conn) => {
+      var player = GAMES[gameName].entities.find((x) => x.id == socket.id);
+      var label = player.getComponentByType(Label).Name;
+
+      game.connections[conn].emit("chat", `${label}: ${data}`);
+    });
+  });
+
   socket.on(EVENTS.updateCharacter, (data) => {
     var player = GAMES[gameName].entities.find((x) => x.id == socket.id);
     if (!player) {

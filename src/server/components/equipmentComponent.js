@@ -18,6 +18,6 @@ export default class Equipment extends Component {
     var gear = Object.keys(this.Slots).map(
       (x) => `${x}: ${this.Slots[x] || "None"}`
     );
-    return gear.join(" | ");
+    return { displayZone: "character", data: gear.join(" | ") };
   }
 }

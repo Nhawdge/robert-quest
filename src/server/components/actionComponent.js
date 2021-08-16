@@ -13,7 +13,10 @@ export default class Action extends Component {
     }
   }
 
-  displayForPlayer() {
-    return `${this.Act || "Target"}ing ${this.TargetName}`;
+  displayForPlayer(isPlayer) {
+    return {
+      displayZone: isPlayer ? "actions" : "combat",
+      data: `${this.Act || "Target"}ing ${this.TargetName}`,
+    };
   }
 }

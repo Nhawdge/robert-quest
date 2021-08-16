@@ -17,7 +17,10 @@ export default class AttributeComponent extends Component {
     this.MeleeMax = 1;
   }
 
-  displayForPlayer() {
-    return `Strength ${this.Strength} | Intelligence: ${this.Intelligence} | Dexterity: ${this.Dexterity} | Melee: ${this.MeleeMin} - ${this.MeleeMax}`;
+  displayForPlayer(isPlayer) {
+    return {
+      displayZone: isPlayer ? "character" : "combat",
+      data: `Strength ${this.Strength} | Intelligence: ${this.Intelligence} | Dexterity: ${this.Dexterity} | Melee: ${this.MeleeMin} - ${this.MeleeMax}`,
+    };
   }
 }

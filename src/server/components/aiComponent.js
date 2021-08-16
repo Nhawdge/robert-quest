@@ -7,6 +7,6 @@ export default class AiComponent extends Component {
     this.BaseLevel = baseLevel;
   }
   displayForPlayer() {
-    return `Attitude: ${this.Attitude}  `;
+    return { displayZone: "combat", data: `Attitude: ${this.Attitude}` };
   }
 }

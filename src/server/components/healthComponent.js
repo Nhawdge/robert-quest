@@ -8,7 +8,10 @@ export default class HealthComponent extends Component {
     this.CurrentHealth = this.Max;
     this.RegenerationRate = 1;
   }
-  displayForPlayer() {
-    return `Health: ${this.CurrentHealth} / ${this.Max} | Regen: ${this.RegenerationRate} / turn`;
+  displayForPlayer(isPlayer) {
+    return {
+      displayZone: isPlayer ? "character" : "combat",
+      data: `Health: ${this.CurrentHealth} / ${this.Max} | Regen: ${this.RegenerationRate} / turn`,
+    };
   }
 }

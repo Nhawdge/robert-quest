@@ -3,6 +3,7 @@ import HealthComponent from "../components/healthComponent.js";
 import System from "./system.js";
 import { turnsInProgress } from "./systemHelpers.js";
 import AttributeComponent from "../components/attributesComponent.js";
+import Label from "../components/labelComponent.js";
 
 export default class AttackSystem extends System {
   Tick(entity) {}
@@ -35,7 +36,10 @@ export default class AttackSystem extends System {
           Math.random() * (attributes.MeleeMax - attributes.MeleeMin) +
             attributes.MeleeMin
         );
+
         hp.CurrentHealth -= dmg;
+        var label = target.getComponentByType(Label);
+        label.LogData.push(`${label.Name} has taken ${dmg} damage.`);
       }
     });
   }

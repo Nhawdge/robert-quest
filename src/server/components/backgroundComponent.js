@@ -29,6 +29,6 @@ export default class Background extends Component {
       output.push(`Background: ${this.Name}`);
     }
 
-    return output.join(" ");
+    return { displayZone: "character", data: output.join(" ") };
   }
 }

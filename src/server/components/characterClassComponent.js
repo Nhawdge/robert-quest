@@ -53,15 +53,15 @@ export default class CharacterClass extends Component {
   displayForPlayer(isPlayer) {
     var output = [];
     if (isPlayer && !this.Name) {
-      var fields = Object.keys(ClassData).map(
-        (x) => `<button data-class="${x}">${x}</button>`
-      ). join(" ");
+      var fields = Object.keys(ClassData)
+        .map((x) => `<button data-class="${x}">${x}</button>`)
+        .join(" ");
       output.push(
         `<fieldset><legend>Pick a Class</legend> ${fields}</fieldset>`
       );
     } else {
       output.push(`Class: ${this.Name}`);
     }
-    return output;
+    return { displayZone: "character", data: output };
   }
 }

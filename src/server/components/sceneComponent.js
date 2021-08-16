@@ -12,6 +12,6 @@ export default class Scene extends Component {
     this.ActiveScene = "Character Creation";
   }
   displayForPlayer() {
-    return `Active Scene: ${this.ActiveScene}`;
+    return   { displayZone: "character", data:  `Active Scene: ${this.ActiveScene}`};
   }
 }

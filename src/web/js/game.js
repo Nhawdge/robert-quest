@@ -10,36 +10,86 @@ const EVENTS = {
 };
 
 socket.on("update", function (data) {
-  var connections = document.querySelector("#entities");
-  connections.textContent = "";
-  data
-    .filter((x) => x)
-    .forEach((element) => {
-      var li = document.createElement("li");
-      li.innerHTML = element.components.join("<br>");
-      //var button = document.createElement("button");
-      //button.innerText = "Target";
-      li.dataset.target = element.id;
-      li.addEventListener("click", function (e) {
-        console.log(e.target);
-        if (e.target.type == "text") {
-          e.target.addEventListener("blur", (evt) => {
-            var data = {};
-            data[evt.target.name] = e.target.value;
-            console.log(data);
-            socket.emit(EVENTS.updateCharacter, data);
-          });
-        } else {
-          socket.emit(EVENTS.updateCharacter, e.target.dataset);
-        }
-      });
-      //li.appendChild(button);
-      connections.appendChild(li);
+  const combat = document.querySelector("#combat");
+  const character = document.querySelector("#character");
+  const actions = document.querySelector("#actions");
+
+  combat.innerHTML = "";
+  character.innerHTML = "";
+  actions.innerHTML = "";
+  console.log(data);
+  data.combat.forEach((element) => {
+    var div = document.createElement("div");
+    console.log(element.components);
+    div.innerHTML = element.components.map((x) => x.data).join("<br>");
+    //var button = document.createElement("button");
+    //button.innerText = "Target";
+    div.dataset.target = element.id;
+    div.addEventListener("click", function (e) {
+      if (e.target.type == "text") {
+        e.target.addEventListener("blur", (evt) => {
+          var data = {};
+          data[evt.target.name] = e.target.value;
+
+          socket.emit(EVENTS.updateCharacter, data);
+        });
+      } else {
+        socket.emit(EVENTS.updateCharacter, e.target.dataset);
+      }
     });
+    //li.appendChild(button);
+    combat.appendChild(div);
+  });
+
+  data.character.forEach((element) => {
+    console.log("character", element);
+
+    var div = document.createElement("div");
+    div.innerHTML = element.components.map((x) => x.data).join("<br>");
+    //var button = document.createElement("button");
+    //button.innerText = "Target";
+    div.dataset.target = element.id;
+    div.addEventListener("click", function (e) {
+      if (e.target.type == "text") {
+        e.target.addEventListener("blur", (evt) => {
+          var data = {};
+          data[evt.target.name] = e.target.value;
+
+          socket.emit(EVENTS.updateCharacter, data);
+        });
+      } else {
+        socket.emit(EVENTS.updateCharacter, e.target.dataset);
+      }
+    });
+    //li.appendChild(button);
+    character.appendChild(div);
+  });
+
+  data.actions.forEach((element) => {
+    var div = document.createElement("div");
+    div.innerHTML = element.components.map((x) => x.data).join("<br>");
+    //var button = document.createElement("button");
+    //button.innerText = "Target";
+    div.dataset.target = element.id;
+    div.addEventListener("click", function (e) {
+      if (e.target.type == "text") {
+        e.target.addEventListener("blur", (evt) => {
+          var data = {};
+          data[evt.target.name] = e.target.value;
+
+          socket.emit(EVENTS.updateCharacter, data);
+        });
+      } else {
+        socket.emit(EVENTS.updateCharacter, e.target.dataset);
+      }
+    });
+    //li.appendChild(button);
+    actions.appendChild(div);
+  });
 });
 
 socket.on("chat", (data) => {
-  var chatWindow = document.querySelector("#chat ol");
+  var chatWindow = document.querySelector("#log ul");
   var li = document.createElement("li");
   li.innerText = data;
   chatWindow.appendChild(li);

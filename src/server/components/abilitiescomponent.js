@@ -17,6 +17,6 @@ export default class Abilities extends Component {
         `<fieldset><legend>Actions</legend>${actions}${endTurn}</fieldset>`
       );
     }
-    return output.join(" ");
+    return { displayZone: isPlayer ? "actions" : "", data: output.join(" ") };
   }
 }

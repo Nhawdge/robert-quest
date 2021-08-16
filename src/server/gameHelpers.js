@@ -12,17 +12,31 @@ import Entity from "./entity.js";
 export function updateAll(game) {
   game.updateState();
   Object.keys(game.connections).forEach((conn) => {
-    var dataOut = game.entities.map((x) => {
-      var uiData = {
-        id: x.id,
-        components: x.components
-          .map((y) => y.displayForPlayer(conn == x.id))
-          .filter((x) => x),
-      };
-      return uiData;
-    });
+    var combat = game.entities.map((x) => ({
+      id: x.id,
+      components: x.components
+        .map((y) => y.displayForPlayer(conn == x.id))
+        .filter((x) => x && x.displayZone == "combat"),
+    }));
+    combat = combat.filter((x) => x.components.length);
 
-    game.connections[conn].emit("update", dataOut);
+    var character = game.entities.map((x) => ({
+      id: x.id,
+      components: x.components
+        .map((y) => y.displayForPlayer(conn == x.id))
+        .filter((x) => x && x.displayZone == "character"),
+    }));
+    character = character.filter((x) => x.components.length);
+
+    var actions = game.entities.map((x) => ({
+      id: x.id,
+      components: x.components
+        .map((y) => y.displayForPlayer(conn == x.id))
+        .filter((x) => x && x.displayZone == "actions"),
+    }));
+    actions = actions.filter((x) => x.components.length);
+
+    game.connections[conn].emit("update", { combat, character, actions });
   });
 }
 

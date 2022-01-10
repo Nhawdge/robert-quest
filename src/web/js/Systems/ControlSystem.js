@@ -6,11 +6,16 @@ export default class ControlSystem {
   constructor() {
     this.KeysPressed = new Set();
     this.MousePosition = new Vector2();
+    this.Engine = null;
   }
-  Load() {
+
+  Load(engine) {
+    this.Engine = engine;
     this.KeyDown = document.addEventListener("keydown", this.KeyDown.bind(this));
     this.KeyUp = document.addEventListener("keyup", this.KeyUp.bind(this));
     this.Mousemove = document.addEventListener("mousemove", this.Mousemove.bind(this));
+
+    console.log("ControlSystem loaded");
   }
 
   KeyDown(event) {
@@ -21,7 +26,8 @@ export default class ControlSystem {
     this.KeysPressed.delete(event.key);
   }
   Mousemove(e) {
-    this.MousePosition = new Vector2(e.clientX, e.clientY);
+    var rect = this.Engine.Canvas.getBoundingClientRect();
+    this.MousePosition = new Vector2(e.clientX - rect.top, e.clientY - rect.left);
   }
 
   UpdateAll(engine) {
@@ -29,6 +35,7 @@ export default class ControlSystem {
 
     engine.Entities.forEach((entity) => {
       var controls = entity.GetComponent(Controls);
+      
       if (controls) {
         var myRender = entity.GetComponent(Render);
         if (this.KeysPressed.has("a")) {
@@ -43,6 +50,7 @@ export default class ControlSystem {
         if (this.KeysPressed.has("s")) {
           myRender.Position.Y += 1 * Speed;
         }
+
         controls.MousePosition = this.MousePosition;
       }
     });

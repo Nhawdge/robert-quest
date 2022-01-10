@@ -8,6 +8,8 @@ export default class GenerationSystem {
 
     var enemy = GenerateEnemy();
     engine.Entities.push(enemy);
+
+    console.log("GenerationSystem loaded");
   }
   UpdateAll(engine) {}
 }

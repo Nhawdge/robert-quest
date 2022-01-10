@@ -1,6 +1,7 @@
 import RenderSystem from "./Systems/RenderSystem.js";
 import GenerationSystem from "./Systems/GenerationSystem.js";
 import ControlSystem from "./Systems/ControlSystem.js";
+import TargetSystem from "./Systems/TargetSystem.js";
 
 export default class Engine {
   constructor(canvas, context) {
@@ -15,6 +16,7 @@ export default class Engine {
     this.Systems.push(new RenderSystem());
     this.Systems.push(new GenerationSystem());
     this.Systems.push(new ControlSystem());
+    this.Systems.push(new TargetSystem());
 
     this.Systems.forEach((x) => x.Load(this));
   }

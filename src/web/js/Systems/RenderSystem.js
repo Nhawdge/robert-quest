@@ -1,6 +1,7 @@
 import Render from "../Components/Render.js";
 import Controls from "../Components/Controls.js";
 import { AngleBetweenPoints } from "../Drawing.js";
+import Vector2 from "../Vector.js";
 
 export default class RenderSystem {
   Load() {
@@ -16,19 +17,31 @@ export default class RenderSystem {
       if (myRender) {
         ctx.drawImage(myRender.Sprite, myRender.Position.X, myRender.Position.Y);
         if (myControls) {
-          var angle = AngleBetweenPoints(myRender.Position, myControls.MousePosition);
+          var center = new Vector2(myRender.Position.X + myRender.Width / 2, myRender.Position.Y + myRender.Height / 2);
+          var angle = AngleBetweenPoints(center, myControls.MousePosition);
+          var angleInRadians = angle * (Math.PI / 180);
 
-          //ctx.beginPath();
-          //ctx.moveTo(myRender.Position.X, myRender.Position.Y);
-          //ctx.lineTo(myRender.Position.X + Math.cos(angle) * 50, myRender.Position.Y + Math.sin(angle) - 50);
-          //ctx.lineTo(myRender.Position.X + Math.cos(angle) * (1 / 50), myRender.Position.Y + Math.sin(angle) + 50);
-          //ctx.lineTo(myRender.Position.X, myRender.Position.Y);
-          //ctx.closePath();
-          //ctx.fill();
+          var distance = 200;
+          var data = {
+            center,
+            angle,
+            angleInRadians,
+            pos1: { x: center.X + Math.cos(angleInRadians + 10) * distance, y: center.Y + Math.sin(angleInRadians + 10) * distance },
+            pos2: { x: center.X + Math.cos(angleInRadians - 10) * distance, y: center.Y + Math.sin(angleInRadians - 10) * distance },
+          };
+          console.log(data);
 
+          ctx.fillStyle = "green";
+          ctx.beginPath();
+          ctx.moveTo(center.X, center.Y);
+          ctx.lineTo(data.pos1.x, data.pos1.y);
+          ctx.lineTo(data.pos2.x, data.pos2.y);
+
+          ctx.closePath();
+          ctx.fill();
           // Draw line to mouse
           ctx.beginPath();
-          ctx.moveTo(myRender.Position.X + myRender.Width / 2, myRender.Position.Y + myRender.Height / 2);
+          ctx.moveTo(center.X, center.Y);
           ctx.lineTo(myControls.MousePosition.X, myControls.MousePosition.Y);
           ctx.stroke();
         }

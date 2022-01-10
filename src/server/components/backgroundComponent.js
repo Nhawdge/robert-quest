@@ -29,6 +29,9 @@ export default class Background extends Component {
       output.push(`Background: ${this.Name}`);
     }
 
-    return { displayZone: "character", data: output.join(" ") };
+    return {
+      displayZone: isPlayer ? "character" : "combat",
+      data: output.join(" "),
+    };
   }
 }

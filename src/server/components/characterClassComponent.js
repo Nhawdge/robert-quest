@@ -62,6 +62,9 @@ export default class CharacterClass extends Component {
     } else {
       output.push(`Class: ${this.Name}`);
     }
-    return { displayZone: "character", data: output };
+    return {
+      displayZone: isPlayer ? "character" : "combat",
+      data: output.join(" "),
+    };
   }
 }

@@ -29,9 +29,9 @@ export default class RenderSystem {
             pos1: { x: center.X + Math.cos(angleInRadians + 10) * distance, y: center.Y + Math.sin(angleInRadians + 10) * distance },
             pos2: { x: center.X + Math.cos(angleInRadians - 10) * distance, y: center.Y + Math.sin(angleInRadians - 10) * distance },
           };
-          console.log(data);
 
-          ctx.fillStyle = "green";
+          ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+
           ctx.beginPath();
           ctx.moveTo(center.X, center.Y);
           ctx.lineTo(data.pos1.x, data.pos1.y);
